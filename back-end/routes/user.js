@@ -3,17 +3,17 @@ var express = require('express');
 var app = express();
 let users = [];
 
-// Send Message - POST Routing -
-app.post('/user', (req, res) => {
-    //recuperation du username et du message envoyé au serveur
+// Send user - POST route-
+app.post('/users', (req, res) => {
+    //recuperation du users
     let uname= req.body;
-    //Ajout du message dans la liste des messages
+    //Ajout des users dans la liste des users
     messages.push({username});
     //confirmation d'ajout
     res.send('ajouté');
 });
-// liste des Messages - GET Routing -
-app.get('/message', (req, res) => {
-    //Renvoyer la liste de tous les messages
+// liste users - GET Routing -
+app.get('/users', (req, res) => {
+    //Renvoyer la liste de tous les users
     res.json(messages);
 });
