@@ -16,6 +16,8 @@ router.post('/register', (req, res) => {
 
     commons.userObject.uname = result.uname;
     commons.userObject.upass = result.upass;
+    commons.userObject.uip = result.uip;
+    commons.userObject.ubrowser = result.ubrowser
     delete commons.userObject.tfa;
 
     return res.send({

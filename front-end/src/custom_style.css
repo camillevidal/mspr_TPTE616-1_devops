@@ -1,3 +1,4 @@
+
 .card-container.card {
   max-width: 350px;
   padding: 40px 40px;
@@ -10,8 +11,77 @@
   -webkit-user-select: none;
   user-select: none;
   cursor: default;
+  background-color:#222222!important;
+  color:#E5C8A1 !important;
+ 
+  
+}
+#title-clinique{
+  font-size:35px;
+  animation-name: tracking-in-expand;
+  animation-duration: 3s;
+}
+.img-chatelet {
+  width: 100%;
+  height: 400px;
+}
+#clinique-img{
+  width: 100%;
 }
 
+ @-webkit-keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.btn:hover{
+  color: black !important;
+
+}
+#secret{
+  font-weight: bold;
+}
+.secret{
+  color: #0F738D;
+  font-weight: bold;
+  font-style: italic;
+}
+.nav-link{
+  color: #E5C8A1 !important;
+}
+.navbar-brand{
+  color: #E5C8A1 !important;
+}
+a{
+  color:#82C0C7;
+  font-weight: bold;
+
+}
+a:hover{
+  color:black;
+  font-weight: bold;
+
+}
 /*
  * Card component
  */

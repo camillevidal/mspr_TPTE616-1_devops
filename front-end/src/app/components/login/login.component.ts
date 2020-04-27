@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { LoginServiceService } from 'src/app/services/login-service/login-service.service';
-
+import { IpServiceService } from '../../ip-service.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,10 +15,21 @@ export class LoginComponent implements OnInit {
     upass: ""
   }
   errorMessage: string = null
-  constructor(private _loginService: LoginServiceService, private _router: Router) {
+  title = 'DemoApp';
+  ipAddress: string;
+  constructor(private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
   }
 
+
   ngOnInit() {
+    this.getIP();
+  }
+  getIP() {
+    this.ip.getIPAddress().subscribe((res: any) => {
+      this.ipAddress = res.ip;
+      console.log(res)
+      console.log(this.ipAddress)
+    });
   }
 
   loginUser() {

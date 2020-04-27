@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginServiceService } from 'src/app/services/login-service/login-service.service';
 import { Router } from '@angular/router';
-
+import { IpServiceService } from '../../ip-service.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -9,17 +10,33 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   errorMessage: string = null
-
+  ipAddress: string;
+  deviceInfo = null;
   userObject = {
     uname: "",
-    upass: ""
+    upass: "",
+    uip: "",
+    ubrowser: ""
   }
 
   confirmPass: string = ""
 
-  constructor(private _loginService: LoginServiceService, private _router: Router) { }
+  constructor(private deviceService: DeviceDetectorService,private ip: IpServiceService,private _loginService: LoginServiceService, private _router: Router) { }
 
   ngOnInit() {
+    this.getIP()
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+    this.userObject.ubrowser = this.deviceInfo.browser
+    console.log("devise info")
+    console.log(this.userObject.ubrowser)
+  }
+  //récupère l'adresse ip de l'utilisateur
+  getIP() {
+    this.ip.getIPAddress().subscribe((res: any) => {
+      this.userObject.uip = res.ip;
+      console.log(res)
+      console.log(this.userObject.uip)
+    });
   }
 
   registerUser() {
