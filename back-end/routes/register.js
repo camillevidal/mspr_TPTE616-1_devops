@@ -29,8 +29,8 @@ router.post('/register', (req, res) => {
     delete commons.userObject.tfa;
 
     //insert user in DB
-    let sql = `INSERT INTO Connection(username,pass,lastip,lastbrowser)
-    VALUES('${commons.userObject.uname}','${commons.userObject.upass}','${commons.userObject.uip}','${commons.userObject.ubrowser}')`;
+    let sql = `INSERT INTO Connection(username,pass,lastip,lastbrowser,token)
+    VALUES('${commons.userObject.uname}','${commons.userObject.upass}','${commons.userObject.uip}','${commons.userObject.ubrowser}',null)`;
     console.log(sql)
 
     // execute the insert statment

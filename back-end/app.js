@@ -5,7 +5,10 @@ const cors = require('cors');
 const login = require('./routes/login');
 const register = require('./routes/register');
 const tfa = require('./routes/tfa');
-const user = require('./routes/user')
+const user = require('./routes/user');
+const mail = require('./routes/mail');
+const token = require('./routes/token')
+
 // Chargement du module http
 const http = require('http');
 const port = 3000;
@@ -17,6 +20,8 @@ app.use(cors());
 app.use(user,bodyParser.urlencoded({extended: true}))
 app.use(login);
 app.use(register);
+app.use(mail);
+app.use(token);
 app.use(tfa);
 app.use(express({
 	secret: 'secret',

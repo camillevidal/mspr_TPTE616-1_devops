@@ -38,6 +38,7 @@ export class LoginServiceService {
     this._isLoggedIn = value
     this.authSub.next(this._isLoggedIn);
     localStorage.setItem('isLoggedIn', value ? "true" : "false");
+
   }
 
   getAuthStatus() {
