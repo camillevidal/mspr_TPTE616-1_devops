@@ -27,15 +27,12 @@ export class RegisterComponent implements OnInit {
     this.getIP()
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.userObject.ubrowser = this.deviceInfo.browser
-    console.log("devise info")
     console.log(this.userObject.ubrowser)
   }
   //récupère l'adresse ip de l'utilisateur
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
       this.userObject.uip = res.ip;
-      console.log(res)
-      console.log(this.userObject.uip)
     });
   }
 

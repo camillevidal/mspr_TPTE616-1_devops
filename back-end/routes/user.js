@@ -6,14 +6,15 @@ let users = [];
 // Send user - POST route-
 app.post('/users', (req, res) => {
     //recuperation du users
-    let uname= req.body;
+    let user= userObject;
     //Ajout des users dans la liste des users
-    messages.push({username});
+    messages.push({user});
     //confirmation d'ajout
     res.send('ajouté');
 });
 // liste users - GET Routing -
 app.get('/users', (req, res) => {
+    res.send('Vous êtes à l\'accueil, que puis-je pour vous ?');
     //Renvoyer la liste de tous les users
-    res.json(messages);
+    res.json(users);
 });

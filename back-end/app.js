@@ -9,8 +9,23 @@ const user = require('./routes/user')
 // Chargement du module http
 const http = require('http');
 const port = 3000;
+var mysql = require('mysql');
 
-
+let connection = mysql.createConnection({
+	host     : '88.122.44.186:3309',
+	user     : 'user',
+	password : 'passwordmspr',
+	database : 'userconnection'
+});
+module.exports = connection
+//utilisation de certains package node
+app.use(express({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(user,bodyParser.urlencoded({extended: true}))
