@@ -3,12 +3,18 @@ import { LoginServiceService } from 'src/app/services/login-service/login-servic
 import { Router } from '@angular/router';
 import { IpServiceService } from '../../ip-service.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+
+import { RecaptchaModule } from 'ng-recaptcha';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+}
   errorMessage: string = null
   ipAddress: string;
   deviceInfo = null;

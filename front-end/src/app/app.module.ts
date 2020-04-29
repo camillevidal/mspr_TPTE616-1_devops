@@ -11,6 +11,9 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginServiceService } from './services/login-service/login-service.service';
 
+import { RecaptchaModule } from 'ng-recaptcha';
+// import { BrowserModule }  from '@angular/platform-browser';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +28,8 @@ import { LoginServiceService } from './services/login-service/login-service.serv
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+    RecaptchaModule.forRoot()
   ],
   providers: [LoginServiceService],
   bootstrap: [AppComponent]

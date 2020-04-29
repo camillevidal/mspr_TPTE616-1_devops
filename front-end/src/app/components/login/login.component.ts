@@ -2,12 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { LoginServiceService } from 'src/app/services/login-service/login-service.service';
 import { IpServiceService } from '../../ip-service.service';
+
+// import { RecaptchaModule } from 'ng-recaptcha';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+//   resolved(captchaResponse: string) {
+//     console.log(`Resolved captcha with response: ${captchaResponse}`);
+// }
 
   tfaFlag: boolean = false
   userObject = {
