@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { LoginServiceService } from 'src/app/services/login-service/login-service.service';
 import { IpServiceService } from '../../ip-service.service';
+import { sha256 } from 'js-sha256';
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,17 +14,22 @@ export class LoginComponent implements OnInit {
   tfaFlag: boolean = false
   userObject = {
     uname: "",
-    upass: ""
+    upass: "",
+    uip:"",
+    ubrowser:""
   }
   errorMessage: string = null
   title = 'DemoApp';
   ipAddress: string;
-  constructor(private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
+  deviceInfo: any;
+  constructor(private deviceService: DeviceDetectorService,private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
   }
 
 
   ngOnInit() {
-    this.getIP();
+   this.getIP();
+   this.deviceInfo = this.deviceService.getDeviceInfo();
+   this.userObject.ubrowser = this.deviceInfo.browser
   }
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
@@ -33,6 +40,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
+    this.userObject.uip = this.ipAddress
     this._loginService.loginAuth(this.userObject).subscribe((data) => {
       this.errorMessage = null;
       if (data.body['status'] === 200) {

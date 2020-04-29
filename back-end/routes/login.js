@@ -2,13 +2,36 @@ const express = require('express');
 const speakeasy = require('speakeasy');
 const commons = require('./commons');
 const router = express.Router();
-
+var mysql = require('mysql');
+let con = mysql.createConnection({
+    host: '88.122.44.186',
+    port:'3309',
+	user     : 'user',
+	password : 'passwordmspr',
+	database : 'userconnection'
+});
 router.post('/login', (req, res) => {
-    console.log(`DEBUG: Received login request`);
+    
 
-    if (commons.userObject.uname && commons.userObject.upass) {
+    con.connect(function(err) {
+        if (err) throw err;
+        con.query(`Select * from Connection where username =${req.body.uname}`, function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+        });
+      });
+
+
+
+
+
+
+    console.log(`DEBUG: Received login request`);
+    console.log("req body "+req.body)
+
+    if (commons.userObject.uname && commons.userObject.upass ) {
         if (!commons.userObject.tfa || !commons.userObject.tfa.secret) {
-            if (req.body.uname == commons.userObject.uname && req.body.upass == commons.userObject.upass) {
+            if (req.body.uname == commons.userObject.uname && req.body.upass == commons.userObject.upass && req.userObject.uip == commons.userObject.uip && req.body.ubrowser == req.body.ubrowser && req.body.token == null) {
                 console.log(`DEBUG: Login without TFA is successful`);
 
                 return res.send({

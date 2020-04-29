@@ -41,7 +41,6 @@ export class RegisterComponent implements OnInit {
 
   registerUser() {
     this.userObject.uip = this.ipAddress
-    console.log("ip adresse register "+ this.userObject.uip)
     if (this.userObject.uname.trim() !== "" && this.userObject.upass.trim() !== "" && (this.userObject.upass.trim() === this.confirmPass))
       this._loginService.registerUser(this.userObject).subscribe((data) => {
         const result = data.body
