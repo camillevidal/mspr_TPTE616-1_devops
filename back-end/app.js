@@ -10,6 +10,19 @@ const user = require('./routes/user')
 const http = require('http');
 const port = 3000;
 var mysql = require('mysql');
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+app.use(bodyParser.json());
+app.use(cors());
+app.use(user,bodyParser.urlencoded({extended: true}))
+app.use(login);
+app.use(register);
+app.use(tfa);
+app.use(express({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
 let connection = mysql.createConnection({
 	host     : '88.122.44.186:3309',
@@ -19,34 +32,27 @@ let connection = mysql.createConnection({
 });
 module.exports = connection
 //utilisation de certains package node
-app.use(express({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
-}));
-app.use(bodyParser.urlencoded({extended : true}));
-app.use(bodyParser.json());
-app.use(bodyParser.json());
-app.use(cors());
-app.use(user,bodyParser.urlencoded({extended: true}))
-app.use(login);
-app.use(register);
-app.use(tfa);
-const server = http.createServer((req, res) => {
-    //Réponse du serveur
-    res.end('Mon premier serveur nodejs!!!');
-});
-// connection du serveur au port d'ecoute
-server.listen(port, (err) => {
-    //check si il y'a pas une erreur pendant le lancement du serveur
-    if (err) {
-        //Afficher l'erreur survenue pendant le lancement
-        return console.log('Erreur: ', err)
-    }
-    // Afficher l'adresse sur serveur
-    console.log(`Serveur: localhost:${port}`)
-});
 
-// app.listen('3000', () => {
-//     console.log('The server started running on http://localhost:3000');
+
+// const server = http.createServer((req, res) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Request-Method', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST');
+//     res.setHeader('Access-Control-Allow-Headers', '*');
+//     //Réponse du serveur
+   
 // });
+// connection du serveur au port d'ecoute
+// server.listen(port, (err) => {
+//     //check si il y'a pas une erreur pendant le lancement du serveur
+//     if (err) {
+//         //Afficher l'erreur survenue pendant le lancement
+//         return console.log('Erreur: ', err)
+//     }
+//     // Afficher l'adresse sur serveur
+//     console.log(`Serveur: localhost:${port}`)
+// });
+
+app.listen('3000', () => {
+    console.log('The server started running on http://localhost:3000');
+});

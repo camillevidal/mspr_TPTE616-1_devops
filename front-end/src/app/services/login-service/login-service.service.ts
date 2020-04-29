@@ -22,7 +22,7 @@ export class LoginServiceService {
         'x-tfa': userObj.authcode
       });
     }
-    return this._http.post("http://localhost:3000/login", { uname: userObj.uname, upass: userObj.upass,uip:userObj.lastIp, ubrowser:userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
+    return this._http.post("http://localhost:3000/login", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip, ubrowser:userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
   }
 
   setupAuth() {
@@ -30,7 +30,8 @@ export class LoginServiceService {
   }
 
   registerUser(userObj: any) {
-    return this._http.post("http://localhost:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.lastIp, ubrowser:userObj.ubrowser}, { observe: "response" });
+    console.log("user object "+JSON.stringify(userObj))
+    return this._http.post("http://localhost:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response',responseType: 'text' });
   }
 
   updateAuthStatus(value: boolean) {

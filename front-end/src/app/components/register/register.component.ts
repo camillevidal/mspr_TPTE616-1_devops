@@ -27,16 +27,21 @@ export class RegisterComponent implements OnInit {
     this.getIP()
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.userObject.ubrowser = this.deviceInfo.browser
-    console.log(this.userObject.ubrowser)
+ 
   }
   //récupère l'adresse ip de l'utilisateur
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
-      this.userObject.uip = res.ip;
+      this.ipAddress = res.ip;
+      console.log(res)
+      console.log(this.ipAddress)
     });
   }
 
+
   registerUser() {
+    this.userObject.uip = this.ipAddress
+    console.log("ip adresse register "+ this.userObject.uip)
     if (this.userObject.uname.trim() !== "" && this.userObject.upass.trim() !== "" && (this.userObject.upass.trim() === this.confirmPass))
       this._loginService.registerUser(this.userObject).subscribe((data) => {
         const result = data.body

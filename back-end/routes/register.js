@@ -1,10 +1,17 @@
 const express = require('express');
 const commons = require('./commons');
-const co = require('../app')
+var mysql = require('mysql');
 const router = express.Router();
+let co = mysql.createConnection({
+    host: '88.122.44.186',
+    port:'3309',
+	user     : 'user',
+	password : 'passwordmspr',
+	database : 'userconnection'
+});
 
 router.post('/register', (req, res) => {
-    console.log(`DEBUG: Received request to register user`);
+    console.log("DEBUG: Received request to register user");
 
     const result = req.body;
 
@@ -22,13 +29,13 @@ router.post('/register', (req, res) => {
     delete commons.userObject.tfa;
 
     //insert user in DB
-    let sql = `INSERT INTO to Connection
-    VALUES(${commons.userObject.uname},${commons.userObject.upass},${commons.userObject.uip},${commons.userObject.ubrowser})`;
+    let sql = `INSERT INTO Connection(username,pass,lastip,lastbrowser)
+    VALUES('${commons.userObject.uname}','${commons.userObject.upass}','${commons.userObject.uip}','${commons.userObject.ubrowser}')`;
     console.log(sql)
 
     // execute the insert statment
-    co.connection.query(sql);
-    co.connection.end();
+    co.query(sql);
+    co.end();
 
     return res.send({
         "status": 200,
