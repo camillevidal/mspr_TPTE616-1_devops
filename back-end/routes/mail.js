@@ -28,4 +28,17 @@ router.get('/email/:token', (req, res) => {
     server.send(message, function(err, message) { console.log(err || message)});
 });
 
+router.get('/email/fr/:adresse', (req, res) => {
+
+    var message	= {
+        text:	"Utilisation suspecte de votre compte",
+        from:	"chatelet_mspr@outlook.fr",
+        to:		req.params.adresse,
+        cc:		"",
+        subject:	"Utilisation suspecte de votre compte, votre compte a été depuis un autre que celui habituelle"
+    };
+    server.send(message, function(err, message) { console.log(err || message)});
+});
+
+
 module.exports = router;
