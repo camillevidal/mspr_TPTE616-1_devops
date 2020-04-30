@@ -3,7 +3,7 @@ import { Router } from '@angular/router'
 import { LoginServiceService } from 'src/app/services/login-service/login-service.service';
 import { IpServiceService } from '../../ip-service.service';
 
-// import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 
 @Component({
@@ -12,9 +12,6 @@ import { IpServiceService } from '../../ip-service.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-//   resolved(captchaResponse: string) {
-//     console.log(`Resolved captcha with response: ${captchaResponse}`);
-// }
 
   tfaFlag: boolean = false
   userObject = {
@@ -24,18 +21,22 @@ export class LoginComponent implements OnInit {
   errorMessage: string = null
   title = 'DemoApp';
   ipAddress: string;
+  captcha = null;
+
   constructor(private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
   }
 
 
   ngOnInit() {
     this.getIP();
+    
   }
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
       this.ipAddress = res.ip;
       console.log(res)
       console.log(this.ipAddress)
+      console.log("dede"+ this.captcha)
     });
   }
 
@@ -57,5 +58,14 @@ export class LoginComponent implements OnInit {
       }
     })
   }
+
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with responses: ${captchaResponse}`);
+    this.captcha = captchaResponse;
+    console.log(this.captcha)
+
+    ///////////////////////////////////////////
+    // Button login non bloquer par le captcha 
+}
 
 }

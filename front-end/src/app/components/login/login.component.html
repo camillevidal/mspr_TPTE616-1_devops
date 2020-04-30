@@ -13,11 +13,10 @@
           <re-captcha (resolved)="resolved($event)" siteKey="6LcQ7u4UAAAAAO36C8cHrQP57DIVIXK-1bAdxlI1"></re-captcha>
         </div>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"
-        [disabled]="uname?.errors?.required || upass?.errors?.required || (this.tfaFlag && authcode?.errors?.required)">Connexion</button>
+        [disabled]="uname?.errors?.required || upass?.errors?.required || !captcha || (this.tfaFlag && authcode?.errors?.required)  ">Connexion</button>
       <p style="text-align:center;"> Pas encore inscrit ?<a [routerLink]="['/register']"> Créer votre compte
           ici</a></p>
       <p class="text-danger" style="text-align:center;" *ngIf="errorMessage">{{errorMessage}}</p>
-      
     </form>
     
   </div>

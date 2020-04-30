@@ -12,9 +12,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-}
+  
   errorMessage: string = null
   ipAddress: string;
   deviceInfo = null;
@@ -22,8 +20,11 @@ export class RegisterComponent implements OnInit {
     uname: "",
     upass: "",
     uip: "",
-    ubrowser: ""
+    ubrowser: "",
   }
+
+  captcha = null;
+
 
   confirmPass: string = ""
 
@@ -57,4 +58,12 @@ export class RegisterComponent implements OnInit {
         }
       });
   }
+
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+    this.captcha = captchaResponse;
+    console.log(this.captcha)
+
+}
+
 }

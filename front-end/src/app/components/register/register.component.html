@@ -13,7 +13,7 @@
           <re-captcha (resolved)="resolved($event)" siteKey="6LcQ7u4UAAAAAO36C8cHrQP57DIVIXK-1bAdxlI1"></re-captcha>
         </div>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"
-        [disabled]="(uname?.errors?.required || upass?.errors?.required || uconfirmpass?.errors?.required) || (upass.value !== uconfirmpass.value)">Inscription
+        [disabled]="(uname?.errors?.required || upass?.errors?.required || uconfirmpass?.errors?.required) || (upass.value !== uconfirmpass.value) || !captcha ">Inscription
         </button>
         <p style="text-align:center;">Déjà inscrit ? <a [routerLink]="['/login']">Connexion ici </a></p>
       <p class="text-success" style="text-align:center;" *ngIf="errorMessage">{{errorMessage}}</p>
