@@ -31,8 +31,6 @@ router.post('/register', (req, res) => {
     //insert user in DB
     let sql = `INSERT INTO Connection(username,pass,lastip,lastbrowser,token)
     VALUES('${commons.userObject.uname}','${commons.userObject.upass}','${commons.userObject.uip}','${commons.userObject.ubrowser}',null)`;
-    console.log(sql)
-
     // execute the insert statment
     co.query(sql);
     co.end();

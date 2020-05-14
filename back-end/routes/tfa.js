@@ -5,6 +5,7 @@ const commons = require('./commons');
 const router = express.Router();
 
 router.post('/tfa/setup', (req, res) => {
+    console.log("common user in tfa "+commons.userObject.uname)
     console.log(`DEBUG: Received TFA setup request`);
 
     const secret = speakeasy.generateSecret({
@@ -18,6 +19,7 @@ router.post('/tfa/setup', (req, res) => {
         issuer: 'NarenAuth v0.0',
         encoding: 'base32'
     });
+    console.log("-----url tfa"+url)
     QRCode.toDataURL(url, (err, dataURL) => {
         commons.userObject.tfa = {
             secret: '',
@@ -75,6 +77,7 @@ router.post('/tfa/verify', (req, res) => {
         "status": 403,
         "message": "Invalid Auth Code, verification failed. Please verify the system Date and Time"
     });
+    
 });
 
 module.exports = router;

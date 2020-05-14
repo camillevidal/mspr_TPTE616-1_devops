@@ -7,7 +7,7 @@ import { LoginServiceService } from 'src/app/services/login-service/login-servic
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  userName:String
   tfa: any = {};
   authcode: string = "";
   errorMessage: string = null;

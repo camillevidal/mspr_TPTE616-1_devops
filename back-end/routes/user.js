@@ -1,8 +1,18 @@
 
 var express = require('express');
 var app = express();
-let users = [];
 
+let users = {};
+
+//tout les users de la base
+module.exports = {
+    users
+};
+
+
+
+
+    
 // Send user - POST route-
 app.post('/users', (req, res) => {
     //recuperation du users
@@ -14,6 +24,7 @@ app.post('/users', (req, res) => {
 });
 // liste users - GET Routing -
 app.get('/users', (req, res) => {
+    
     res.send('Vous êtes à l\'accueil, que puis-je pour vous ?');
     //Renvoyer la liste de tous les users
     res.json(users);

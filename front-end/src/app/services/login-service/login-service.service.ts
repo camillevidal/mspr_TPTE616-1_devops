@@ -22,7 +22,7 @@ export class LoginServiceService {
         'x-tfa': userObj.authcode
       });
     }
-    return this._http.post("http://localhost:3000/login", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip, ubrowser:userObj.ubrowser }, { observe: 'response', headers: this.headerOptions,responseType: 'text'});
+   return this._http.post("http://localhost:3000/login", { uname: userObj.uname, upass: userObj.upass, uip: userObj.uip, ubrowser: userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
   }
 
   setupAuth() {
@@ -31,7 +31,7 @@ export class LoginServiceService {
 
   registerUser(userObj: any) {
     console.log("user object "+JSON.stringify(userObj))
-    return this._http.post("http://localhost:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response',responseType: 'text' });
+    return this._http.post("http://localhost:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response' });
   }
 
   updateAuthStatus(value: boolean) {
@@ -54,7 +54,9 @@ export class LoginServiceService {
   getAuth() {
     return this._http.get("http://localhost:3000/tfa/setup", { observe: 'response' });
   }
-
+  getUser(user:String){
+    return this._http.get(`http://localhost:3000/user/${user}`)
+  }
   deleteAuth() {
     return this._http.delete("http://localhost:3000/tfa/setup", { observe: 'response' });
   }

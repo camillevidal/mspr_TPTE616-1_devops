@@ -39,21 +39,28 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  loginUser() {
+  login() {
+    console.log("user browser "+this.userObject.ubrowser)
+    console.log("uname "+this.userObject.uname)
     this.userObject.uip = this.ipAddress
+    console.log("user ip "+this.userObject.uip)
     this._loginService.loginAuth(this.userObject).subscribe((data) => {
+      let status = data.body['status']
+      
       this.errorMessage = null;
-      if (data.body['status'] === 200) {
+      if (status === 200) {
+        console.log("login successful")
         this._loginService.updateAuthStatus(true);
         this._router.navigateByUrl('/home');
       }
-      if (data.body['status'] === 206) {
+      if (status === 206) {
         this.tfaFlag = true;
       }
-      if (data.body['status'] === 403) {
+      if (status === 403) {
+        console.log("user or pass invalid")
         this.errorMessage = data.body['message'];
       }
-      if (data.body['status'] === 404) {
+      if (status === 404) {
         this.errorMessage = data.body['message'];
       }
     })
