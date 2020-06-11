@@ -20,7 +20,6 @@ app.use(cors());
 app.use(user,bodyParser.urlencoded({extended: true}))
 app.use(login);
 app.use(register);
-app.use(mail);
 app.use(token);
 app.use(tfa);
 app.use(express({
