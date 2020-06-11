@@ -60,7 +60,7 @@ router.post('/login', (req, res) => {
                             }
                         });
 
-                        if (JSON.parse(xhr.responseText).country === "FR") {
+                        if (JSON.parse(xhr.responseText).country !== "FR") {
                             let token = makeToken();
                             let query_token = `UPDATE Connection SET token ='${token}' WHERE username='${commons.userObject.uname}'`;
                             co.query(query_token, function (err, result, fields) {
