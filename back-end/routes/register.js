@@ -3,7 +3,7 @@ const commons = require('./commons');
 var mysql = require('mysql');
 const router = express.Router();
 let co = mysql.createConnection({
-    host: '88.122.44.186',
+    host: '109.11.21.53',
     port:'3309',
 	user     : 'user',
 	password : 'passwordmspr',

@@ -3,94 +3,180 @@ const speakeasy = require('speakeasy');
 const commons = require('./commons');
 var mysql = require('mysql');
 const router = express.Router();
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const email = require("emailjs");
+
+
+
 router.post('/login', (req, res) => {
+    var xhr = new XMLHttpRequest();
+    //let pass = encodeURIComponent(req.body.upass)
+    let buff = new Buffer(req.body.upass);
+    let base64data = buff.toString('base64');
 
-    console.log(`DEBUG: Received login request in login.js`);
-    //recuperer les users de la base
-    let co = mysql.createConnection({
-        host: '88.122.44.186',
-        port: '3309',
-        user: 'user',
-        password: 'passwordmspr',
-        database: 'userconnection'
-    });
-    co.connect(function (err) {
-        if (err) throw err;
-        const query = `Select * from Connection where username = '${req.body.uname}' and pass = '${req.body.upass}'`;
-        co.query(query, function (err, result, fields) {
+    let url = `http://109.11.21.53:8686/authenticate?username=${req.body.uname}&password=` + base64data;
+    xhr.open("POST", url, false);
+    //Envoie les informations du header adaptées avec la requête
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(null);
+
+    if (xhr.responseText == 'connect') {
+
+
+
+        console.log(`DEBUG: Received login request in login.js`);
+        let co = mysql.createConnection({
+            host: '109.11.21.53',
+            port: '3309',
+            user: 'user',
+            password: 'passwordmspr',
+            database: 'userconnection'
+        });
+        co.connect(function (err) {
             if (err) throw err;
-            if (result.length > 0) {
-                let user = JSON.stringify(result)
-                commons.userObject.uname = req.body.uname
-                commons.userObject.upass = req.body.upass
-                commons.userObject.uip = user.lastip
-                commons.userObject.ubrowser = user.lastbrowser
-                if (commons.userObject.uip =! req.body.uip){
-                    //envoie de mail
-                    console.log(`DEBUG : L'adresse ip de l'utilisateur ne correspond pas `)
+            const query = `Select * from Connection where username = '${req.body.uname}'`;
+            co.query(query, function (err, result, fields) {
+                if (err) throw err;
 
-                }
-                if (commons.userObject.ubrowser =! req.body.ubrowser){
-                    console.log(`DEBUG : Le navigateur de l'utilisateur ne correspond pas `)
-                }
+                if (result.length > 0) {
 
-                
-                if (!commons.userObject.tfa || !commons.userObject.tfa.secret) {
+
                     commons.userObject.uname = req.body.uname
-                    console.log("user commons name "+req.body.uname)
-                    console.log(`DEBUG: Login without TFA is successful`);
-                    return res.send({
-                        "status": 200,
-                        "message": "success"
+                    commons.userObject.upass = req.body.upass
+                    commons.userObject.uip = result[0].lastip
+                    commons.userObject.ubrowser = result[0].lastbrowser
+                    if (commons.userObject.uip != req.body.uip) {
+                        let urlIp = `http://ipinfo.io/${req.body.uip}/geo`
+                        xhr.open("GET", urlIp, false);
+
+                        //Envoie les informations du header adaptées avec la requête
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.send();
+
+                        let server = email.server.connect({
+                            user: "chatelet_mspr@outlook.fr",
+                            password: "dutmenfc123",
+                            host: "smtp-mail.outlook.com",
+                            ssl: true
+                        });
+
+                        if (JSON.parse(xhr.responseText).country != "FR") {
+                            //envoie de mail
+                            var message = {
+                                text: "Validation de votre compte",
+                                from: "chatelet_mspr@outlook.fr",
+                                to: `${req.body.uname}@chatelet.com`,
+                                cc: "",
+                                subject: "Validation de votre compte",
+                                attachment:
+                                    [
+                                        {
+                                            data: "<html><form action=\"localhost:3000/token/" + req.params.token + "\">" +
+                                                "    <input type=\"submit\" value=\"Valider mon compte\" />" +
+                                                "</form></html>", alternative: true
+                                        }
+                                    ]
+                            };
+                            server.send(message, function (err, message) { console.log(err || message) });
+                           
+                            return res.send({
+                                "status": 403,
+                                "message": "Adresse IP hors de France"
+                            });
+
+                        }
+                        else {
+                            let message = {
+                                text: 'Utilisation suspecte de votre compte',
+                                from: 'chatelet_mspr@outlook.fr',
+                                to: `${req.body.uname}@chatelet.com`,
+                                cc: '',
+                                subject: 'Utilisation suspecte de votre compte, votre compte a été depuis un autre que celui habituelle'
+                            };
+                            console.log(message)
+                            server.send(message, function (err, message) { console.log(err || message) });
+                            return res.send({
+                                "status": 403,
+                                "message": "Nouvelle IP"
+                            });
+                        }
+                        console.log(`DEBUG : L'adresse ip de l'utilisateur ne correspond pas `)
+
+                    }
+                    if (commons.userObject.ubrowser = !req.body.ubrowser) {
+                        console.log(`DEBUG : Le navigateur de l'utilisateur ne correspond pas `)
+                    }
+
+
+                    if (!commons.userObject.tfa || !commons.userObject.tfa.secret) {
+                        commons.userObject.uname = req.body.uname
+                        console.log("user commons name " + req.body.uname)
+                        console.log(`DEBUG: Login without TFA is successful`);
+                        return res.send({
+                            "status": 200,
+                            "message": "success"
+                        });
+                    }
+                    if (!req.headers['x-tfa']) {
+                        console.log(`WARNING: Login was partial without TFA header`);
+
+                        return res.send({
+                            "status": 206,
+                            "message": "Rentrez le code d'authentification svp"
+                        });
+                    }
+
+                    let isVerified = speakeasy.totp.verify({
+                        secret: commons.userObject.tfa.secret,
+                        encoding: 'base32',
+                        token: req.headers['x-tfa']
                     });
+
+                    if (isVerified) {
+                        console.log(`DEBUG: Login with TFA is verified to be successful`);
+
+                        return res.send({
+                            "status": 200,
+                            "message": "success"
+                        });
+                    }
+                    else {
+                        console.log(`ERROR: Invalid AUTH code`);
+
+                        return res.send({
+                            "status": 206,
+                            "message": "Code authentification invalide"
+                        });
+                    }
                 }
-                if (!req.headers['x-tfa']) {
-                    console.log(`WARNING: Login was partial without TFA header`);
 
-                    return res.send({
-                        "status": 206,
-                        "message": "Rentrez le code d'authentification svp"
-                    });
-                }
-
-                let isVerified = speakeasy.totp.verify({
-                    secret: commons.userObject.tfa.secret,
-                    encoding: 'base32',
-                    token: req.headers['x-tfa']
-                });
-
-                if (isVerified) {
-                    console.log(`DEBUG: Login with TFA is verified to be successful`);
-
-                    return res.send({
-                        "status": 200,
-                        "message": "success"
-                    });
-                }
                 else {
-                    console.log(`ERROR: Invalid AUTH code`);
-
+                    console.log("user doesnt exist !!!!")
                     return res.send({
-                        "status": 206,
-                        "message": "Code authentification invalide"
+                        "status": 403,
+                        "message": "Login ou mot de passe invalide. Enregistrez vous pour accèder à l'application . "
                     });
+
                 }
-            }
 
-            else {
-                console.log("user doesnt exist !!!!")
-                return res.send({
-                    "status": 403,
-                    "message": "Login ou mot de passe invalide. Enregistrez vous pour accèder à l'application . "
-                });
-
-            }
+            });
 
         });
 
-    });
+    }
+    else if (xhr.responseText.includes("Erreur")) {
+        return res.send({
+            "status": 500,
+            "message": "Erreur serveur "
+        });
 
-
+    }
+    else {
+        return res.send({
+            "status": 403,
+            "message": "Login ou mot de passe invalide. Enregistrez vous pour accèder à l'application . "
+        });
+    }
 
 });
 

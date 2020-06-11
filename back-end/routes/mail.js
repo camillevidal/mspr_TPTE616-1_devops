@@ -1,6 +1,7 @@
 const express = require('express');
 const commons = require('./commons');
-var email 	= require("emailjs");
+const email 	= require("emailjs");
+
 
 var server 	= email.server.connect({
     user:    "chatelet_mspr@outlook.fr",
