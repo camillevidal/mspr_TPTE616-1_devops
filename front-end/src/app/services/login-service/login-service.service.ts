@@ -22,16 +22,16 @@ export class LoginServiceService {
         'x-tfa': userObj.authcode
       });
     }
-   return this._http.post("http://localhost:3000/login", { uname: userObj.uname, upass: userObj.upass, uip: userObj.uip, ubrowser: userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
+   return this._http.post("http://109.11.21.53:3000/login", { uname: userObj.uname, upass: userObj.upass, uip: userObj.uip, ubrowser: userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
   }
 
   setupAuth() {
-    return this._http.post("http://localhost:3000/tfa/setup", {}, { observe: 'response' })
+    return this._http.post("http://portail.chatelet.dutmen.fr:3000/tfa/setup", {}, { observe: 'response' })
   }
 
   registerUser(userObj: any) {
     console.log("user object "+JSON.stringify(userObj))
-    return this._http.post("http://localhost:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response' });
+    return this._http.post("http://portail.chatelet.dutmen.fr:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response' });
   }
 
   updateAuthStatus(value: boolean) {
@@ -52,16 +52,16 @@ export class LoginServiceService {
   }
 
   getAuth() {
-    return this._http.get("http://localhost:3000/tfa/setup", { observe: 'response' });
+    return this._http.get("http://109.11.21.53:3000/tfa/setup", { observe: 'response' });
   }
   getUser(user:String){
-    return this._http.get(`http://localhost:3000/user/${user}`)
+    return this._http.get(`http://109.11.21.53:3000/user/${user}`)
   }
   deleteAuth() {
-    return this._http.delete("http://localhost:3000/tfa/setup", { observe: 'response' });
+    return this._http.delete("http://109.11.21.53:3000/tfa/setup", { observe: 'response' });
   }
 
   verifyAuth(token: any) {
-    return this._http.post("http://localhost:3000/tfa/verify", { token }, { observe: 'response' });
+    return this._http.post("http://109.11.21.53:3000/tfa/verify", { token }, { observe: 'response' });
   }
 }

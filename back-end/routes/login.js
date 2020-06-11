@@ -14,7 +14,7 @@ router.post('/login', (req, res) => {
     let buff = new Buffer(req.body.upass);
     let base64data = buff.toString('base64');
 
-    let url = `http://109.11.21.53:8686/authenticate?username=${req.body.uname}&password=` + base64data;
+    let url = `http://portail.chatelet.dutmen.fr:8686/authenticate?username=${req.body.uname}&password=` + base64data;
     xhr.open("POST", url, false);
     //Envoie les informations du header adaptées avec la requête
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -26,7 +26,7 @@ router.post('/login', (req, res) => {
 
         console.log(`DEBUG: Received login request in login.js`);
         let co = mysql.createConnection({
-            host: '109.11.21.53',
+            host: 'portail.chatelet.dutmen.fr',
             port: '3309',
             user: 'user',
             password: 'passwordmspr',

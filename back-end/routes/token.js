@@ -3,16 +3,16 @@ const commons = require('./commons');
 var mysql = require('mysql');
 const router = express.Router();
 let co_insert = mysql.createConnection({
-    host        : '109.11.21.53',
-    port        :'3309',
+    host        : 'portail.chatelet.dutmen.fr',
+    port        : '3309',
     user        : 'user',
     password    : 'passwordmspr',
     database    : 'userconnection'
 });
 
 let co_update = mysql.createConnection({
-    host        : '109.11.21.53',
-    port        :'3309',
+    host        : 'portail.chatelet.dutmen.fr',
+    port        : '3309',
     user        : 'user',
     password    : 'passwordmspr',
     database    : 'userconnection'

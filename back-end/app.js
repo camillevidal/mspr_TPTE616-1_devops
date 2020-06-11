@@ -6,7 +6,7 @@ const login = require('./routes/login');
 const register = require('./routes/register');
 const tfa = require('./routes/tfa');
 const user = require('./routes/user')
-const mail = require('./routes/mail');
+
 const token = require('./routes/token')
 
 // Chargement du module http
@@ -30,7 +30,7 @@ app.use(express({
 }));
 
 let connection = mysql.createConnection({
-	host     : '109.11.21.53:3309',
+	host     : 'portail.chatelet.dutmen.fr:3309',
 	user     : 'user',
 	password : 'passwordmspr',
 	database : 'userconnection'
@@ -59,5 +59,5 @@ module.exports = connection
 // });
 
 app.listen('3000', () => {
-    console.log('The server started running on http://localhost:3000');
+    console.log('The server started running on http://portail.chatelet.dutmen.fr:3000');
 });
