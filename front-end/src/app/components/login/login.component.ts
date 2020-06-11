@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
-import { LoginServiceService } from 'src/app/services/login-service/login-service.service';
-import { IpServiceService } from '../../ip-service.service';
-import { sha256 } from 'js-sha256';
-import { DeviceDetectorService } from 'ngx-device-detector';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router'
+import {LoginServiceService} from 'src/app/services/login-service/login-service.service';
+import {IpServiceService} from '../../ip-service.service';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,65 +14,68 @@ export class LoginComponent implements OnInit {
   tfaFlag: boolean = false
   userObject = {
     uname: "",
-    upass: "",
-    uip:"",
-    ubrowser:""
+    upass: ""
   }
   errorMessage: string = null
   title = 'DemoApp';
   ipAddress: string;
-  deviceInfo: any;
-  captcha: string;
-  constructor(private deviceService: DeviceDetectorService,private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
+  captcha = null;
+
+  constructor(private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
   }
 
 
   ngOnInit() {
-   this.getIP();
-   this.deviceInfo = this.deviceService.getDeviceInfo();
-   this.userObject.ubrowser = this.deviceInfo.browser
+    this.getIP();
+    this.cookie();
+
   }
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
       this.ipAddress = res.ip;
       console.log(res)
       console.log(this.ipAddress)
+      console.log("dede" + this.captcha)
     });
   }
 
-  login() {
-    console.log("user browser "+this.userObject.ubrowser)
-    console.log("uname "+this.userObject.uname)
-    this.userObject.uip = this.ipAddress
-    console.log("user ip "+this.userObject.uip)
+  loginUser() {
     this._loginService.loginAuth(this.userObject).subscribe((data) => {
-      let status = data.body['status']
-      
       this.errorMessage = null;
-      if (status === 200) {
-        console.log("login successful")
+      if (data.body['status'] === 200) {
         this._loginService.updateAuthStatus(true);
         this._router.navigateByUrl('/home');
       }
-      if (status === 206) {
+      if (data.body['status'] === 206) {
         this.tfaFlag = true;
       }
-      if (status === 403) {
-        console.log("user or pass invalid")
+      if (data.body['status'] === 403) {
         this.errorMessage = data.body['message'];
       }
-      if (status === 404) {
+      if (data.body['status'] === 404) {
         this.errorMessage = data.body['message'];
       }
     })
   }
 
-
   resolved(captchaResponse: string) {
-    
+    console.log(`Resolved captcha with responses: ${captchaResponse}`);
     this.captcha = captchaResponse;
     console.log(this.captcha)
+  }
 
+  cookie(){
+    console.log("ssssssssssssssssssssssssssss")
+      const cookieDisclaimer = document.querySelector('.js-cookie-disclaimer');
+
+      if (!localStorage.getItem('cookieDisclaimer')) {
+        cookieDisclaimer.classList.add('is-active');
+      }
+
+      cookieDisclaimer.querySelector('button').addEventListener('click', () => {
+        localStorage.setItem('cookieDisclaimer', "true");
+        cookieDisclaimer.classList.remove('is-active');
+      });
   }
 
 
