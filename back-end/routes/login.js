@@ -34,18 +34,15 @@ router.post('/login', (req, res) => {
         });
         co.connect(function (err) {
             if (err) throw err;
-            const query = `Select * from Connection where username = '${req.body.uname}'`;
+            let query = `Select * from Connection where username = '${req.body.uname}'`;
             co.query(query, function (err, result, fields) {
                 if (err) throw err;
-
                 if (result.length > 0) {
-
-
                     commons.userObject.uname = req.body.uname
                     commons.userObject.upass = req.body.upass
                     commons.userObject.uip = result[0].lastip
                     commons.userObject.ubrowser = result[0].lastbrowser
-                    if (commons.userObject.uip != req.body.uip) {
+                    if (commons.userObject.uip !== req.body.uip) {
                         let urlIp = `http://ipinfo.io/${req.body.uip}/geo`
                         xhr.open("GET", urlIp, false);
 
@@ -56,32 +53,43 @@ router.post('/login', (req, res) => {
                         let server = email.server.connect({
                             user: "chatelet_mspr@outlook.fr",
                             password: "dutmenfc123",
-                            host: "smtp-mail.outlook.com",
-                            ssl: true
+                            host: "SMTP.office365.com",
+                            port: "587",
+                            tls: {
+                                ciphers:'SSLv3'
+                            }
                         });
 
-                        if (JSON.parse(xhr.responseText).country != "FR") {
+                        if (JSON.parse(xhr.responseText).country === "FR") {
+                            let token = makeToken();
+                            let query_token = `UPDATE Connection SET token ='${token}' WHERE username='${commons.userObject.uname}'`;
+                            co.query(query_token, function (err, result, fields) {
+                                if (err) throw err;
+                                else{
+                                    var message = {
+                                        text: "Validation de votre compte",
+                                        from: "chatelet_mspr@outlook.fr",
+                                        to: `${req.body.uname}@chatelet.com`,
+                                        cc: "",
+                                        subject: "Validation de votre compte",
+                                        attachment:
+                                            [
+                                                {
+                                                    data: "<html><form action=\"localhost:3000/token/" + token + "\">" +
+                                                        "    <input type=\"submit\" value=\"Valider mon compte\" />" +
+                                                        "</form></html>", alternative: true
+                                                }
+                                            ]
+                                    };
+                                    server.send(message, function (err, message) { console.log(err || message) });
+                                }
+                            });
+
                             //envoie de mail
-                            var message = {
-                                text: "Validation de votre compte",
-                                from: "chatelet_mspr@outlook.fr",
-                                to: `${req.body.uname}@chatelet.com`,
-                                cc: "",
-                                subject: "Validation de votre compte",
-                                attachment:
-                                    [
-                                        {
-                                            data: "<html><form action=\"localhost:3000/token/" + req.params.token + "\">" +
-                                                "    <input type=\"submit\" value=\"Valider mon compte\" />" +
-                                                "</form></html>", alternative: true
-                                        }
-                                    ]
-                            };
-                            server.send(message, function (err, message) { console.log(err || message) });
-                           
+
                             return res.send({
                                 "status": 403,
-                                "message": "Adresse IP hors de France"
+                                "message": "Adresse IP hors de France, Veuillez valider votre compte"
                             });
 
                         }
@@ -100,10 +108,9 @@ router.post('/login', (req, res) => {
                                 "message": "Nouvelle IP"
                             });
                         }
-                        console.log(`DEBUG : L'adresse ip de l'utilisateur ne correspond pas `)
 
                     }
-                    if (commons.userObject.ubrowser = !req.body.ubrowser) {
+                    if (commons.userObject.ubrowser !== req.body.ubrowser) {
                         console.log(`DEBUG : Le navigateur de l'utilisateur ne correspond pas `)
                     }
 
@@ -179,5 +186,14 @@ router.post('/login', (req, res) => {
     }
 
 });
+
+function makeToken() {
+    let result           = '';
+    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for ( var i = 0; i < 64; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
 
 module.exports = router;
