@@ -10,7 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginServiceService } from './services/login-service/login-service.service';
-
+import { RecaptchaModule } from 'ng-recaptcha';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +25,7 @@ import { LoginServiceService } from './services/login-service/login-service.serv
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    RecaptchaModule.forRoot(),
     DeviceDetectorModule.forRoot()
   ],
   providers: [LoginServiceService],

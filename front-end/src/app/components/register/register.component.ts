@@ -3,6 +3,7 @@ import { LoginServiceService } from 'src/app/services/login-service/login-servic
 import { Router } from '@angular/router';
 import { IpServiceService } from '../../ip-service.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { RecaptchaModule } from 'ng-recaptcha';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -20,14 +21,15 @@ export class RegisterComponent implements OnInit {
   }
 
   confirmPass: string = ""
+  captcha: string;
 
-  constructor(private deviceService: DeviceDetectorService,private ip: IpServiceService,private _loginService: LoginServiceService, private _router: Router) { }
+  constructor(private deviceService: DeviceDetectorService, private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) { }
 
   ngOnInit() {
     this.getIP()
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.userObject.ubrowser = this.deviceInfo.browser
- 
+
   }
   //récupère l'adresse ip de l'utilisateur
   getIP() {
@@ -44,14 +46,20 @@ export class RegisterComponent implements OnInit {
     if (this.userObject.uname.trim() !== "" && this.userObject.upass.trim() !== "" && (this.userObject.upass.trim() === this.confirmPass))
       this._loginService.registerUser(this.userObject).subscribe((data) => {
         const result = data.body
-        console.log(result['status'] )
+        console.log(result['status'])
         if (result['status'] === 200) {
           this.errorMessage = result['message'];
-        
+
           setTimeout(() => {
             this._router.navigate(['/login']);
           }, 2000);
         }
       });
+  }
+  resolved(captchaResponse: string) {
+    
+    this.captcha = captchaResponse;
+    console.log(this.captcha)
+
   }
 }

@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   title = 'DemoApp';
   ipAddress: string;
   deviceInfo: any;
+  captcha: string;
   constructor(private deviceService: DeviceDetectorService,private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
   }
 
@@ -65,5 +66,14 @@ export class LoginComponent implements OnInit {
       }
     })
   }
+
+
+  resolved(captchaResponse: string) {
+    
+    this.captcha = captchaResponse;
+    console.log(this.captcha)
+
+  }
+
 
 }
