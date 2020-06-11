@@ -29,14 +29,14 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.getIP();
-    
+
   }
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
       this.ipAddress = res.ip;
       console.log(res)
       console.log(this.ipAddress)
-      console.log("dede"+ this.captcha)
+      console.log("dede" + this.captcha)
     });
   }
 
@@ -63,9 +63,7 @@ export class LoginComponent implements OnInit {
     console.log(`Resolved captcha with responses: ${captchaResponse}`);
     this.captcha = captchaResponse;
     console.log(this.captcha)
-
-    ///////////////////////////////////////////
-    // Button login non bloquer par le captcha 
-}
+  }
+  
 
 }

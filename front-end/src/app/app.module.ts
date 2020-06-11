@@ -29,7 +29,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
     HttpClientModule,
     ReactiveFormsModule,
     DeviceDetectorModule.forRoot(),
-    RecaptchaModule.forRoot()
+    RecaptchaModule.forRoot(),
   ],
   providers: [LoginServiceService],
   bootstrap: [AppComponent]

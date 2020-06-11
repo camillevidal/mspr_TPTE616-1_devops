@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
       this.userObject.uip = res.ip;
       console.log(res)
       console.log(this.userObject.uip)
+      console.log("capthca : " + this.captcha)
     });
   }
 

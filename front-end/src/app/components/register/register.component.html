@@ -3,21 +3,21 @@
     <img id="profile-img" class="profile-img-card" src="assets/images/avatar_2x.png" />
     <form class="form-signin" (ngSubmit)="registerUser()" #registerForm="ngForm">
       <input type="text" id="uname" class="form-control" name="uname" #uname="ngModel" [(ngModel)]="userObject.uname"
-        placeholder="Nom d'utilisateur" title="Please enter the username" autocomplete="off" required autofocus>
+             placeholder="Nom d'utilisateur" title="Please enter the username" autocomplete="off" required autofocus>
       <input type="password" id="upass" class="form-control" name="upass" placeholder="Mot de passe"
-        title="Please enter the password" #upass="ngModel" autocomplete="off" [(ngModel)]="userObject.upass" required>
+             title="Please enter the password" #upass="ngModel" autocomplete="off" [(ngModel)]="userObject.upass" required>
       <input type="password" id="confirmpass" class="form-control" name="confirmpass" placeholder="Confirmez le mot de passe"
-        title="Please re-enter the password" #uconfirmpass="ngModel" autocomplete="off" [(ngModel)]="confirmPass"
-        required>
-        <div id="captacha">
-          <re-captcha (resolved)="resolved($event)" siteKey="6LcQ7u4UAAAAAO36C8cHrQP57DIVIXK-1bAdxlI1"></re-captcha>
-        </div>
+             title="Please re-enter the password" #uconfirmpass="ngModel" autocomplete="off" [(ngModel)]="confirmPass"
+             required>
+      <div id="captacha">
+        <re-captcha (resolved)="resolved($event)" siteKey="6LcQ7u4UAAAAAO36C8cHrQP57DIVIXK-1bAdxlI1"></re-captcha>
+      </div>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"
-        [disabled]="(uname?.errors?.required || upass?.errors?.required || uconfirmpass?.errors?.required) || (upass.value !== uconfirmpass.value) || !captcha ">Inscription
-        </button>
-        <p style="text-align:center;">Déjà inscrit ? <a [routerLink]="['/login']">Connexion ici </a></p>
+              [disabled]="(uname?.errors?.required || upass?.errors?.required || uconfirmpass?.errors?.required) || (upass.value !== uconfirmpass.value) || !captcha ">Inscription
+      </button>
+      <p style="text-align:center;">Déjà inscrit ? <a [routerLink]="['/login']">Connexion ici </a></p>
       <p class="text-success" style="text-align:center;" *ngIf="errorMessage">{{errorMessage}}</p>
-      
+
     </form>
   </div>
 </div>
