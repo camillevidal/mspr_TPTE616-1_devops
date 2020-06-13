@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router'
 import {LoginServiceService} from 'src/app/services/login-service/login-service.service';
 import {IpServiceService} from '../../ip-service.service';
+import {DeviceDetectorService} from "ngx-device-detector";
 
 
 @Component({
@@ -12,27 +13,33 @@ import {IpServiceService} from '../../ip-service.service';
 export class LoginComponent implements OnInit {
 
   tfaFlag: boolean = false
+  deviceInfo = null;
   userObject = {
     uname: "",
-    upass: ""
+    upass: "",
+    uip: "",
+    ubrowser: ""
   }
   errorMessage: string = null
   title = 'DemoApp';
   ipAddress: string;
   captcha = null;
 
-  constructor(private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
+  constructor(private deviceService: DeviceDetectorService, private ip: IpServiceService, private _loginService: LoginServiceService, private _router: Router) {
   }
 
 
   ngOnInit() {
     this.getIP();
     this.cookie();
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+    this.userObject.ubrowser = this.deviceInfo.browser
 
   }
   getIP() {
     this.ip.getIPAddress().subscribe((res: any) => {
       this.ipAddress = res.ip;
+      this.userObject.uip = res.ip;
       console.log(res)
       console.log(this.ipAddress)
       console.log("dede" + this.captcha)
@@ -40,6 +47,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
+    console.log(this.userObject)
     this._loginService.loginAuth(this.userObject).subscribe((data) => {
       this.errorMessage = null;
       if (data.body['status'] === 200) {

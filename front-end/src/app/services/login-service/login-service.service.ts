@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +22,17 @@ export class LoginServiceService {
         'x-tfa': userObj.authcode
       });
     }
-   return this._http.post("http://109.11.21.53:3000/login", { uname: userObj.uname, upass: userObj.upass, uip: userObj.uip, ubrowser: userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
+    console.log(userObj.uip)
+   return this._http.post("http://localhost:3000/login", { uname: userObj.uname, upass: userObj.upass, uip: userObj.uip, ubrowser: userObj.ubrowser }, { observe: 'response', headers: this.headerOptions });
   }
 
   setupAuth() {
-    return this._http.post("http://portail.chatelet.dutmen.fr:3000/tfa/setup", {}, { observe: 'response' })
+    return this._http.post("http://localhost:3000/tfa/setup", {}, { observe: 'response' })
   }
 
   registerUser(userObj: any) {
     console.log("user object "+JSON.stringify(userObj))
-    return this._http.post("http://portail.chatelet.dutmen.fr:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response' });
+    return this._http.post("http://localhost:3000/register", { uname: userObj.uname, upass: userObj.upass,uip:userObj.uip , ubrowser:userObj.ubrowser}, { observe: 'response' });
   }
 
   updateAuthStatus(value: boolean) {
