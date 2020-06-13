@@ -47,10 +47,6 @@ router.post('/login', (req, res) => {
             password: 'passwordmspr',
             database: 'userconnection'
         });
-        var hash = sha256.create();
-        hash.update(req.body.upass);
-        hash.hex();
-        console.log(hash)
         let encrypt_pass = sha256(req.body.upass)
         let query_pwned = `Select * from pwned Where pass='${encrypt_pass}'`
         co_pwned.query(query_pwned, function (err, result_pwned, fields) {
@@ -84,6 +80,13 @@ router.post('/login', (req, res) => {
             password: 'passwordmspr',
             database: 'userconnection'
         });
+        let co_token_null = mysql.createConnection({
+            host: 'portail.chatelet.dutmen.fr',
+            port: '3309',
+            user: 'user',
+            password: 'passwordmspr',
+            database: 'userconnection'
+        });
         co.connect(function (err) {
             if (err) throw err;
             let query = `Select * from Connection where username = '${req.body.uname}'`;
@@ -91,10 +94,8 @@ router.post('/login', (req, res) => {
                 let bypass = false;
                 if (err) throw err;
                 if (result.length === 0) {
-                    let buff_ip = new Buffer(req.body.uip);
-                    let encode_ip = buff_ip.toString('base64');
-                    let buff_browser = new Buffer(req.body.ubrowser);
-                    let encode_browser = buff_browser.toString('base64');
+                    let encode_ip = sha256(req.body.uip);
+                    let encode_browser = sha256(req.body.ubrowser);
                     let sql = `INSERT INTO Connection(username,lastip,lastbrowser,token)
                     VALUES('${req.body.uname}','${encode_ip}','${encode_browser}',null)`;
                     // execute the insert statment
@@ -104,7 +105,7 @@ router.post('/login', (req, res) => {
                 }
                 if (result.length > 0 || bypass === true) {
                     let query = `Select * from Connection where username = '${req.body.uname}' and token = null`;
-                    co.query(query, function (err, result_token, fields) {
+                    co_token_null.query(query, function (err, result_token, fields) {
                         if (err) throw err;
                         if (result_token.length > 1) {
                                  return res.send({
@@ -112,10 +113,8 @@ router.post('/login', (req, res) => {
                                 "message": "Votre compte est vérouillé"
                             });
                         } else {
-                            let buff_ip = new Buffer(req.body.uip);
-                            let encode_req_ip = buff_ip.toString('base64');
-                            let buff_browser = new Buffer(req.body.ubrowser);
-                            let encode_req_browser = buff_browser.toString('base64');
+                            let encode_req_ip = sha256(req.body.uip);
+                            let encode_req_browser = sha256(req.body.ubrowser);
 
                             commons.userObject.uname = req.body.uname
                             commons.userObject.upass = req.body.upass
@@ -189,8 +188,7 @@ router.post('/login', (req, res) => {
                                 }
 
                             }
-                            let buff_browser_nav = new Buffer(req.body.ubrowser);
-                            let encode_req_browser_nav = buff_browser_nav.toString('base64');
+                            let encode_req_browser_nav = sha256(req.body.ubrowser);
                             if (commons.userObject.ubrowser !== encode_req_browser_nav) {
                                 console.log(`DEBUG : Le navigateur de l'utilisateur ne correspond pas `)
                                 let token = makeToken();
