@@ -23,15 +23,17 @@ router.get('/token/:id', (req, res) => {
 
     let sql_update;
     let temp = req.params.id.split("&");
+
     let temp_token = temp[0].replace("token=", "");
+    console.log(temp_token)
     if(req.params.id.indexOf("ip_code") !== -1){
         let temp_ip = temp[1].replace("ip_code=", "");
-        sql_update = 'UPDATE Connection Set token = null and lastip =' + temp_ip + '" WHERE token ="' + + temp_token +'"';
+        sql_update = 'UPDATE Connection Set token = null and lastip =' + temp_ip + '" WHERE token ="' + temp_token +'"';
 
     }
     if(req.params.id.indexOf("browser") !== -1){
         let temp_browser = temp[1].replace("browser=", "");
-        sql_update = 'UPDATE Connection Set token = null and lastbrowser =' + temp_browser + '" WHERE token ="' + + temp_token +'"';
+        sql_update = 'UPDATE Connection Set token = null and lastbrowser =' + temp_browser + '" WHERE token ="' + temp_token +'"';
     }
 
     console.log(sql_update)
