@@ -10,7 +10,7 @@
              #authcode="ngModel" [(ngModel)]="userObject.authcode" placeholder="Two-Factor Auth code"
              title="Please enter the code" required>
       <div id="captacha">
-        <re-captcha (resolved)="resolved($event)" siteKey="6LcQ7u4UAAAAAO36C8cHrQP57DIVIXK-1bAdxlI1"></re-captcha>
+        <re-captcha (resolved)="resolved($event)" siteKey="6LeZcqkZAAAAAE2CcCiRBaTAqVhWZLAqEn5BEWOO"></re-captcha>
       </div>
       <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"
               [disabled]="uname?.errors?.required || upass?.errors?.required || !captcha || (this.tfaFlag && authcode?.errors?.required)">Connexion</button>
