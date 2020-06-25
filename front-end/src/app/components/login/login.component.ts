@@ -73,7 +73,6 @@ export class LoginComponent implements OnInit {
   }
 
   cookie(){
-    console.log("ssssssssssssssssssssssssssss")
       const cookieDisclaimer = document.querySelector('.js-cookie-disclaimer');
 
       if (!localStorage.getItem('cookieDisclaimer')) {

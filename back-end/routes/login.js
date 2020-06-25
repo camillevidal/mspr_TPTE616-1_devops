@@ -142,19 +142,11 @@ router.post('/login', (req, res) => {
                                         if (err) throw err;
                                         else {
                                             var message = {
-                                                text: "Validation de votre compte",
+                                                text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
                                                 from: "chatelet_mspr@outlook.fr",
                                                 to: `${req.body.uname}@chatelet.com`,
                                                 cc: "",
                                                 subject: "Validation de votre compte",
-                                                attachment:
-                                                    [
-                                                        {
-                                                            data: "<html><form action=\"localhost:3000/token/" + token + "\">" +
-                                                                "    <input type=\"submit\" value=\"Valider mon compte\" />" +
-                                                                "</form></html>", alternative: true
-                                                        }
-                                                    ]
                                             };
                                             server.send(message, function (err, message) {
                                                 console.log(err || message)
@@ -175,7 +167,7 @@ router.post('/login', (req, res) => {
                                         from: 'chatelet_mspr@outlook.fr',
                                         to: `${req.body.uname}@chatelet.com`,
                                         cc: '',
-                                        subject: 'Utilisation suspecte de votre compte, votre compte a été depuis un autre que celui habituelle'
+                                        subject: 'Utilisation suspecte de votre compte, votre compte a été depuis un autre appareil que celui habituelle'
                                     };
                                     console.log(message)
                                     server.send(message, function (err, message) {
@@ -197,19 +189,11 @@ router.post('/login', (req, res) => {
                                     if (err) throw err;
                                     else {
                                         var message = {
-                                            text: "Validation de votre compte",
+                                            text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
                                             from: "chatelet_mspr@outlook.fr",
                                             to: `${req.body.uname}@chatelet.com`,
                                             cc: "",
                                             subject: "Validation de votre compte",
-                                            attachment:
-                                                [
-                                                    {
-                                                        data: "<html><form action=\"localhost:3000/token/" + token + "\">" +
-                                                            "    <input type=\"submit\" value=\"Valider mon compte\" />" +
-                                                            "</form></html>", alternative: true
-                                                    }
-                                                ]
                                         };
                                         server.send(message, function (err, message) {
                                             console.log(err || message)
