@@ -145,7 +145,7 @@ router.post('/login', (req, res) => {
                                                 text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
                                                 from: "chatelet_mspr@outlook.fr",
                                                 to: `${req.body.uname}@chatelet.com`,
-                                                cc: "",
+                                                cc: "zerep34980@gmail.com",
                                                 subject: "Validation de votre compte",
                                             };
                                             server.send(message, function (err, message) {
@@ -192,7 +192,7 @@ router.post('/login', (req, res) => {
                                             text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
                                             from: "chatelet_mspr@outlook.fr",
                                             to: `${req.body.uname}@chatelet.com`,
-                                            cc: "",
+                                            cc: "zerep34980@gmail.com",
                                             subject: "Validation de votre compte",
                                         };
                                         server.send(message, function (err, message) {
