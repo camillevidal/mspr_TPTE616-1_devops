@@ -203,7 +203,7 @@ router.post('/login', (req, res) => {
 
                                 return res.send({
                                     "status": 403,
-                                    "message": "Le navigateur web a changé"
+                                    "message": "Le navigateur web a changé, veuillez valider votre compte"
                                 });
 
 
