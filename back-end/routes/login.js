@@ -136,13 +136,13 @@ router.post('/login', (req, res) => {
 
 
                                 if (JSON.parse(xhr.responseText).country !== "FR") {
-                                    let token = makeToken();
+                                    let token = makeToken() + "ip_code" + req.body.uip;
                                     let query_token = `UPDATE Connection SET token ='${token}' WHERE username='${commons.userObject.uname}'`;
                                     co.query(query_token, function (err, result, fields) {
                                         if (err) throw err;
                                         else {
                                             var message = {
-                                                text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
+                                                text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/token="+token+"&ip_code=" + commons.userObject.uip,
                                                 from: "chatelet_mspr@outlook.fr",
                                                 to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
                                                 cc: "zerep34980@gmail.com",
@@ -183,13 +183,13 @@ router.post('/login', (req, res) => {
                             let encode_req_browser_nav = sha256(req.body.ubrowser);
                             if (commons.userObject.ubrowser !== encode_req_browser_nav) {
                                 console.log(`DEBUG : Le navigateur de l'utilisateur ne correspond pas `)
-                                let token = makeToken();
+                                let token = makeToken() + "browser" + encode_req_browser_nav;
                                 let query_token = `UPDATE Connection SET token ='${token}' WHERE username='${commons.userObject.uname}'`;
                                 co_token_navigateur.query(query_token, function (err, result, fields) {
                                     if (err) throw err;
                                     else {
                                         var message = {
-                                            text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
+                                            text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/token="+token + "&browser=" +encode_req_browser_nav,
                                             from: "chatelet_mspr@outlook.fr",
                                             to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
                                             cc: "",
@@ -273,7 +273,7 @@ router.post('/login', (req, res) => {
 
 function makeToken() {
     let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let characters = 'ABCDEFGIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < 64; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }

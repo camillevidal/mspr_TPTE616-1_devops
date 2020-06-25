@@ -20,10 +20,22 @@ let co_update = mysql.createConnection({
 
 router.get('/token/:id', (req, res) => {
     //insert user in DB
-    let sql_insert = 'Select id from Connection WHERE token =' +'"' + req.params.id +'"';
-    let sql_update = 'UPDATE Connection Set token = null WHERE token =' +'"' + req.params.id +'"';
-    console.log(sql_insert)
+
+    let sql_update;
+    let temp = req.params.id.split("&");
+    let temp_token = temp[0].replace("token=", "");
+    if(req.params.id.indexOf("ip_code") !== -1){
+        let temp_ip = temp[1].replace("ip_code=", "");
+        sql_update = 'UPDATE Connection Set token = null WHERE token =' +'"' + temp_token +'" and lastip ="' + temp_ip +"';" ;
+
+    }
+    if(req.params.id.indexOf("browser") !== -1){
+        let temp_browser = temp[1].replace("browser=", "");
+        sql_update = 'UPDATE Connection Set token = null WHERE token =' +'"' + temp_token +'" and lastbrowser ="' + temp_browser +"';" ;
+    }
+
     console.log(sql_update)
+    let sql_insert = 'Select id from Connection WHERE token =' +'"' + temp_token +'"';
 
     // execute the insert statment
     co_insert.query(sql_insert, function (err, result, fields) {
@@ -35,6 +47,10 @@ router.get('/token/:id', (req, res) => {
                     if (err) throw err;
                     else {
                         console.log("update");
+                        return res.send({
+                            "status": 200,
+                            "message": "User is successfully registered"
+                        });
                     }
                 });
             }
@@ -42,10 +58,7 @@ router.get('/token/:id', (req, res) => {
         }
     });
 
-    return res.send({
-        "status": 200,
-        "message": "User is successfully registered"
-    });
+
 });
 
 module.exports = router;
