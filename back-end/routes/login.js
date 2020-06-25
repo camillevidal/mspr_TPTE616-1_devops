@@ -136,7 +136,7 @@ router.post('/login', (req, res) => {
 
 
                                 if (JSON.parse(xhr.responseText).country !== "FR") {
-                                    let token = makeToken() + "ip_code" + req.body.uip;
+                                    let token = makeToken();
                                     let query_token = `UPDATE Connection SET token ='${token}' WHERE username='${commons.userObject.uname}'`;
                                     co.query(query_token, function (err, result, fields) {
                                         if (err) throw err;
@@ -183,7 +183,7 @@ router.post('/login', (req, res) => {
                             let encode_req_browser_nav = sha256(req.body.ubrowser);
                             if (commons.userObject.ubrowser !== encode_req_browser_nav) {
                                 console.log(`DEBUG : Le navigateur de l'utilisateur ne correspond pas `)
-                                let token = makeToken() + "browser" + encode_req_browser_nav;
+                                let token = makeToken();
                                 let query_token = `UPDATE Connection SET token ='${token}' WHERE username='${commons.userObject.uname}'`;
                                 co_token_navigateur.query(query_token, function (err, result, fields) {
                                     if (err) throw err;
@@ -273,7 +273,7 @@ router.post('/login', (req, res) => {
 
 function makeToken() {
     let result = '';
-    let characters = 'ABCDEFGIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < 64; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
