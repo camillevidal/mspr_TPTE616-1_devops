@@ -144,7 +144,7 @@ router.post('/login', (req, res) => {
                                             var message = {
                                                 text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
                                                 from: "chatelet_mspr@outlook.fr",
-                                                to: `${req.body.uname}@chatelet.com`,
+                                                to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
                                                 cc: "zerep34980@gmail.com",
                                                 subject: "Validation de votre compte",
                                             };
@@ -165,7 +165,7 @@ router.post('/login', (req, res) => {
                                     let message = {
                                         text: 'Utilisation suspecte de votre compte',
                                         from: 'chatelet_mspr@outlook.fr',
-                                        to: `${req.body.uname}@chatelet.com`,
+                                        to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
                                         cc: '',
                                         subject: 'Utilisation suspecte de votre compte, votre compte a été depuis un autre appareil que celui habituelle'
                                     };
@@ -191,8 +191,8 @@ router.post('/login', (req, res) => {
                                         var message = {
                                             text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/"+token,
                                             from: "chatelet_mspr@outlook.fr",
-                                            to: `${req.body.uname}@chatelet.com`,
-                                            cc: "zerep34980@gmail.com",
+                                            to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
+                                            cc: "",
                                             subject: "Validation de votre compte",
                                         };
                                         server.send(message, function (err, message) {
