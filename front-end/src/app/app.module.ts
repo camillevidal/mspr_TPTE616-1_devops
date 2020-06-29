@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+// import { RegisterComponent } from './components/register/register.component';
 import { LoginServiceService } from './services/login-service/login-service.service';
 import { RecaptchaModule } from 'ng-recaptcha';
 @NgModule({
@@ -16,8 +16,8 @@ import { RecaptchaModule } from 'ng-recaptcha';
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    LoginComponent,
-    RegisterComponent
+    LoginComponent
+    // RegisterComponent
   ],
   imports: [
     BrowserModule,
