@@ -6,6 +6,7 @@ const router = express.Router();
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const email = require("emailjs");
 var sha256 = require('js-sha256');
+var sha1 = require('js-sha1');
 
 const server = email.server.connect({
     user: "chatelet_mspr@outlook.fr",
@@ -47,20 +48,22 @@ router.post('/login', (req, res) => {
             password: 'passwordmspr',
             database: 'userconnection'
         });
-        let encrypt_pass = sha256(req.body.upass)
+        let encrypt_pass = sha1(req.body.upass)
+        console.log(encrypt_pass);
         let query_pwned = `Select * from pwned Where pass='${encrypt_pass}'`
         co_pwned.query(query_pwned, function (err, result_pwned, fields) {
+            console.log(result_pwned.length)
             if(err) throw err;
             if(result_pwned.length > 0){
-                let message = {
+                let message_pwned = {
                     text: "Votre mot de passe est présent dans une base piraté. Veuillez contacter l'administrateur pour en changer",
                     from: "chatelet_mspr@outlook.fr",
-                    to: `${req.body.uname}@chatelet.com`,
+                    to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
                     cc: "",
                     subject: "Chatelet, Important",
                 };
-                server.send(message, function (err, message) {
-                    console.log(err || message)
+                server.send(message_pwned, function (err, message_pwned) {
+                    console.log(err || message_pwned)
                 });
             }
         });
@@ -267,7 +270,6 @@ router.post('/login', (req, res) => {
             "message": "Login ou mot de passe invalide. Enregistrez vous pour accèder à l'application . "
         });
     }
-
 })
 ;
 
