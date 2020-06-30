@@ -16,7 +16,7 @@
               [disabled]="uname?.errors?.required || upass?.errors?.required || !captcha || (this.tfaFlag && authcode?.errors?.required)">Connexion</button>
 <!--      <p style="text-align:center;"> Pas encore inscrit ?<a [routerLink]="['/register']"> Créer votre compte-->
 <!--        ici</a></p>-->
-<!--      <p class="text-danger" style="text-align:center;" *ngIf="errorMessage">{{errorMessage}}</p>-->
+      <p class="text-danger" style="text-align:center;" *ngIf="errorMessage">{{errorMessage}}</p>
     </form>
 
   </div>

@@ -148,7 +148,7 @@ router.post('/login', (req, res) => {
                                                 text: "Validation de votre compte, veuillez copier l'url suivante dans votre navigateur : \n portail.chatelet.dutmen.fr:3000/token/token="+token+"&ip_code=" + commons.userObject.uip,
                                                 from: "chatelet_mspr@outlook.fr",
                                                 to: `${req.body.uname}@chatelet.com, zerep34980@gmail.com`,
-                                                cc: "zerep34980@gmail.com",
+                                                cc: "",
                                                 subject: "Validation de votre compte",
                                             };
                                             server.send(message, function (err, message) {
@@ -156,8 +156,6 @@ router.post('/login', (req, res) => {
                                             });
                                         }
                                     });
-
-                                    //envoie de mail
 
                                     return res.send({
                                         "status": 403,
